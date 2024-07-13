@@ -1,46 +1,48 @@
 public class MergeSort {
 
-    static void mergeSort(int[] arr, int l, int r){
-        // base case
-        if(l>=r) return;
-        int m = (l+r)/2;
-        mergeSort(arr, l, m);
-        mergeSort(arr, m+1, r);
-        merge(arr, l, m, r);
-    }
-    static void merge(int[] arr, int l, int m, int r){
-        int n1 = m - l + 1;
-        int n2 = r - m;
-        int[] left = new int[n1];
-        int[] right = new int[n2];
-        for(int i = 0; i < n1; i++) left[i] = arr[l + i];
-        for(int j = 0; j < n2; j++) right[j] = arr[m + 1 + j];
-        int i = 0, j = 0, k = l;
-        while(i < n1 && j < n2){
-            if(left[i] <= right[j]){
-                arr[k++] = left[i++];
+    static void merge(int[] arr, int left, int mid, int right) {
+        int[] temp = new int[right - left + 1];
+        int k = 0;
+        int i = left, j = mid + 1;
+
+        while (i <= mid && j <= right) {
+            if (arr[i] <= arr[j]) {
+                temp[k++] = arr[i++];
             }
             else
-                arr[k++] = right[j++];
+                temp[k++] = arr[j++];
+            }
+        while(i <= mid){
+            temp[k++] = arr[i++];
+            }
+
+        while(j <= right){
+            temp[k++] = arr[j++];
         }
-        while(i < n1){
-            arr[k++] = left[i++];
+        for (i = left; i <= right; i++) {
+            arr[i] = temp[i - left];
         }
-        while(j < n2){
-            arr[k++] = right[j++];
+
+    }
+
+
+    public static void mergeSort(int[] arr, int l, int h){
+
+        if(l < h){
+            int m = (l+h)/2;
+            mergeSort(arr, l, m);
+            mergeSort(arr, m+1, h);
+            merge(arr, l, m, h);
         }
     }
-    public static void main(String[] args){
-        int[] arr = {0, 8, 2, 4, 7, 9, 5, 3, 1};
-        int n = arr.length;
-        System.out.println("Unsorted Array");
-        for(int i = 0; i < n; i++){
-            System.out.print(arr[i] + " ");
-        }
-        mergeSort(arr, 0, n - 1);
-        System.out.println("\nSorted Array");
-        for(int i = 0; i < n; i++){
-            System.out.print(arr[i] + " ");
+    public static void main(String[] args) {
+
+        int[] arr = {3,6,1,8,2,0,9};
+        int l=0;
+        int h=arr.length-1;
+        mergeSort(arr, l, h);
+        for(int i=0; i<arr.length; i++){
+            System.out.print(arr[i]+" ");
         }
     }
 }
